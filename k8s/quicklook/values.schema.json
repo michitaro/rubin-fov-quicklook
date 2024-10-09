@@ -1,0 +1,49 @@
+{
+  "properties": {
+    "quicklook_image": {
+      "type": "string"
+    },
+    "s3_repository": {
+      "$ref": "#/definitions/s3_config"
+    },
+    "s3_tile": {
+      "$ref": "#/definitions/s3_config"
+    }
+  },
+  "required": [
+    "quicklook_image"
+  ],
+  "additionalProperties": false,
+  "definitions": {
+    "s3_config": {
+      "properties": {
+        "access_key": {
+          "type": "string"
+        },
+        "secret": {
+          "type": "string"
+        },
+        "endpoint": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "secure": {
+          "type": "boolean"
+        },
+        "bucket": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "access_key",
+        "secret",
+        "endpoint",
+        "secure",
+        "bucket"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,15 @@
+quicklook_image: localhost:32000/quicklook
+s3_repository:
+  access_key: quicklook
+  secret: password
+  endpoint:
+    - minio-cluster-ip.minio:9000
+  secure: false
+  bucket: quicklook-repository
+s3_tile:
+  access_key: quicklook
+  secret: password
+  endpoint:
+    - minio-cluster-ip.minio:9000
+  secure: false
+  bucket: quicklook-tile

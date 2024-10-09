@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quicklook-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: quicklook-db
+  template:
+    metadata:
+      labels:
+        app: quicklook-db
+    spec:
+      containers:
+        - name: quicklook-db
+          # docker run --rm \
+          #   --name quicklook-db \
+          #   -e POSTGRES_USER=quicklook \
+          #   -e POSTGRES_PASSWORD=quicklook \
+          #   -e POSTGRES_DB=quicklook \
+          #   -p 5432:5432 \
+          #   -v $(PWD)/docker-volumes/postgres:/var/lib/postgresql/data \
+          #   postgres:16
+          image: 'postgres:16'
+          env:
+            - name: POSTGRES_USER
+              value: quicklook
+            - name: POSTGRES_PASSWORD
+              value: quicklook
+            - name: POSTGRES_DB
+              value: quicklook
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - name: quicklook-db
+              mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: quicklook-db
+          persistentVolumeClaim:
+            claimName: quicklook-db
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: quicklook-db
+spec:
+  selector:
+    app: quicklook-db
+  type: ClusterIP
+  clusterIP: None
+  ports:
+    - name: postgres
+      protocol: TCP
+      port: 5432
+      targetPort: 5432
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: quicklook-db
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
